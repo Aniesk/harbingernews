@@ -42,8 +42,60 @@
       </div>
     <% end %>
 		<div class = 'offset1' style = "clear: both;">
-			<%= @club.content %>
+			<%=raw @club.content %>
 
 		</div>
-	</div>
+	</div><!-- End "announcements" -->
+  <!-- This is the comments section.  I'm not really sure how much I need to explain here.-->
+  <div id="posts" style = "clear: both; margin-top: 20px;" class = "span10 offset2">
+    
+
+    <% if signed_in? %>
+     
+      <div class = "span5 offset1" id = "announcements">
+      <%= form_for(@new_post, html: { class: 'form-vertical'}) do |f| %>
+          <p style = "font-size: 14px; text-align: center; margin-top: 10px;">Add a new comment?</p>
+          <div class="control-group" style = "text-align: center;">
+            <div class = "controls">
+              <%= f.text_area :body, style: "height: 50px;" %>
+            </div>
+          </div>
+          <%= f.hidden_field :slug, :value => @club.slug %>
+          <%= f.hidden_field :sp_or_cl, :value => "club" %>
+          <div class="actions" style = "text-align: center;" %>
+          <%= f.submit "Comment!" %>
+          </div>
+      <% end %>
+      </div>
+    <% end %><br/>
+    <p style = "font-size: 16px; float: left; clear: both;">Comments: <%= @posts.length %></p>
+    <% if @posts.length == 0 %>
+      <p style = "float: left; clear: both;">No Comments Here!</p>
+    <% else %>
+      <% @posts.each do |t| %>
+      <div class = "row-fluid" style = "clear: both;">
+        <div class = "span10" style = "background-color: #E8E8E8; border: 1px dashed black; margin-bottom: 15px;">
+          <div class = "span3" style = "background-color: #E3E3E3; border-right: 1px dashed #000; border-bottom: 1px dashed #000">
+            <% if (User.find(t.author_id)).avatar_file_name.nil? %>
+              <%= image_tag User.find(t.author_id).avatar.url(:thumb), style: "height: 75px; width: 75px;" %>
+            <% else%>
+              <%= image_tag User.avatar.url(:thumb), style: "height: 75px; width: 75px;" %>
+            <% end %> <!-- Image has been shown for the user, now show the user's mame-->
+            <%= User.find(t.author_id).name %>
+          </div>
+          <div class = "span9" style = "position: relative;">
+            <div id = "postBody">
+              <%= t.body %>
+            </div>
+            <div id = "bottomControls" style = "">
+              <% if can? :delete, t %>
+                <%= link_to "Delete Comment", post_path(t), :method => :delete, style: "font-size: 10px; text-align: right;" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% end %>
+    <% end %>
+  </div>
 </div><!-- end "row" -->

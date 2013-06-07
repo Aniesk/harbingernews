@@ -4,6 +4,7 @@ class Club < ActiveRecord::Base
   
   has_many :favorites, :as => :favoritable
   has_many :users, :through => :favorites
+  has_many :posts
   
   def to_param
     slug

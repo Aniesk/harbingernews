@@ -1,5 +1,7 @@
 Harbingernews::Application.routes.draw do
 
+  resources :posts
+
   root :to => "home#index"
   
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'

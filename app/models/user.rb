@@ -17,12 +17,15 @@ class User < ActiveRecord::Base
   # attr_accessible :title, :body
   has_attached_file :avatar,
     :styles => { :medium => '300x300>', :thumb => '100x100>', :header => '18x18>' }, 
-    :default_url => '/images/:style/missing.png'
+    :default_url => 'default_pic.png'
   
   # Favorites
   has_many :favorites
   has_many :sports,    :through => :favorites, :source => :favoritable, :source_type => "Sport"
   has_many :clubs,     :through => :favorites, :source => :favoritable, :source_type => "Club"
+
+  ## Posts
+  has_many :posts
   
   include RoleModel
  

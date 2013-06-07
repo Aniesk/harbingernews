@@ -31,6 +31,15 @@ class ClubsController < ApplicationController
     @cultural = Club.where("category = :category", {:category => "cultural"})
     @services = Club.where("category = :category", {:category => "services"})
     @all = Club.where("category = :category", {:category => "all"})
+    @posts = Post.where("sp_or_cl = :sp_or_cl", {:sp_or_cl => "club"})
+    @posts = @posts.where("slug = :slug", {:slug => @club.slug}).reverse
+    if signed_in?      
+      @new_post = Post.new()
+      @new_post.slug = @club.slug 
+      @new_post.sp_or_cl = "club"
+      @new_post.author = current_user.id
+    end
+      
     
     
     respond_to do |format|

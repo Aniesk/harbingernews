@@ -10,6 +10,7 @@ class Ability
     
     can :read, [Club, Sport, Bus, UpcomingEvent, RecentEvent, Memo, Announcement, User]
     can :manage, User, :id => user.id
+    can :manage, Post, :author_id => user.id
 
     if user.has_role? :admin
         can :manage, :all
@@ -24,5 +25,7 @@ class Ability
       can :access, :rails_admin
       can :dashboard
     end
+
+
   end
 end
